@@ -1,6 +1,6 @@
 # SDC_MetalDetector
 
-This script allows a you to place down or use existing native metal detectors like in real life! If a player walks through with a blacklisted item it will set off the metal detector. You can set a unlimited amount of items and a unlimted amount of spawned detectors. This script also uses a smart place/remove system to conserve resources while going around the city!
+This script allows a you to place down or use existing native metal detectors like in real life! If a player walks through with a blacklisted item it will set off the metal detector. You can set a unlimited amount of items and a unlimited amount of spawned detectors. This script also uses a smart place/remove system to conserve resources while going around the city!
 
 # Demo: 
 
