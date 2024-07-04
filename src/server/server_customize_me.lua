@@ -21,3 +21,17 @@ function hasItem(src, item)
         end
     end
 end
+
+function removeAllOfItem(src, item)
+    if SDC.Framework == "qb-core" then
+        local Player = QBCore.Functions.GetPlayer(src)
+        if Player.Functions.GetItemByName(item) then
+            Player.Functions.RemoveItem(item, Player.Functions.GetItemByName(item).amount)
+        end
+    elseif SDC.Framework == "esx" then
+        local xPlayer = ESX.GetPlayerFromId(src)
+        if xPlayer.getInventoryItem(item) then
+            xPlayer.removeInventoryItem(item, xPlayer.getInventoryItem(item).count) 
+        end
+    end
+end
