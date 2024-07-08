@@ -4,20 +4,26 @@ local ESX = nil
 if SDC.Framework == "qb-core" then
     QBCore = exports['qb-core']:GetCoreObject()
 elseif SDC.Framework == "esx" then
-    ESX = exports["es_extended"]:getSharedObject()
+    ESX = exports['es_extended']:getSharedObject()
 end
 
 
 function hasItem(src, item)
     if SDC.Framework == "qb-core" then
         local Player = QBCore.Functions.GetPlayer(src)
-        return Player.Functions.GetItemByName(item)
+        local inventoryItem = Player.Functions.GetItemByName(item)
+        if inventoryItem then
+            return true
+        else
+            return false
+        end
     elseif SDC.Framework == "esx" then
         local xPlayer = ESX.GetPlayerFromId(src)
-        if xPlayer.getInventoryItem(item) then
-            return xPlayer.getInventoryItem(item).count
+        local inventoryItem = xPlayer.getInventoryItem(item)
+        if inventoryItem and inventoryItem.count > 0 then
+            return true
         else
-            return 0
+            return false
         end
     end
 end
@@ -25,13 +31,15 @@ end
 function removeAllOfItem(src, item)
     if SDC.Framework == "qb-core" then
         local Player = QBCore.Functions.GetPlayer(src)
-        if Player.Functions.GetItemByName(item) then
-            Player.Functions.RemoveItem(item, Player.Functions.GetItemByName(item).amount)
+        local inventoryItem = Player.Functions.GetItemByName(item)
+        if inventoryItem then
+            Player.Functions.RemoveItem(item, inventoryItem.amount)
         end
     elseif SDC.Framework == "esx" then
         local xPlayer = ESX.GetPlayerFromId(src)
-        if xPlayer.getInventoryItem(item) then
-            xPlayer.removeInventoryItem(item, xPlayer.getInventoryItem(item).count) 
+        local inventoryItem = xPlayer.getInventoryItem(item)
+        if inventoryItem then
+            xPlayer.removeInventoryItem(item, inventoryItem.count)
         end
     end
 end
