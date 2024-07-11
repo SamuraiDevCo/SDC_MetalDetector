@@ -1,0 +1,28 @@
+<html>
+    <head>
+		<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+		<style type="text/css">
+			html {
+				display: none;
+			}
+		</style>
+    </head>
+    <body>
+		<script type="text/javascript">
+            $(function() {
+				let Sounds = [];
+				window.addEventListener("message", function(event) {
+					if (event.data.SoundType[0] === "Started" && !Sounds[event.data.SoundPerson]) {
+						Sounds[event.data.SoundPerson] = new Audio(event.data.SoundType[1]);
+
+						Sounds[event.data.SoundPerson].volume = event.data.SoundType[2];
+                        Sounds[event.data.SoundPerson].play();
+                        Sounds[event.data.SoundPerson].addEventListener("ended", function(){
+                            Sounds[event.data.SoundPerson] = null;
+                        });
+					}
+				});
+			});
+        </script>
+    </body>
+</html>

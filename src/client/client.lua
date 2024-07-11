@@ -49,7 +49,7 @@ Citizen.CreateThread(function()
 		if detectorsNear[1] and Vdist(coords.x, coords.y, coords.z, GetOffsetFromEntityInWorldCoords(detectorsNear[closestDet], 0.0, 0.0, 1.0)) <= 5 and not cooldown then
 			if Vdist(coords.x, coords.y, coords.z, GetOffsetFromEntityInWorldCoords(detectorsNear[closestDet], 0.0, 0.0, 1.0)) <= 0.5 and not inDet then
 				inDet = true
-				TriggerServerEvent("SDMD:Server:CheckInv")
+				TriggerServerEvent("SDMD:Server:CheckInv", GetEntityCoords(detectorsNear[closestDet]))
 			elseif Vdist(coords.x, coords.y, coords.z, GetOffsetFromEntityInWorldCoords(detectorsNear[closestDet], 0.0, 0.0, 1.0)) > 0.8 and inDet then
 				inDet = false
 				cooldown = true
@@ -64,9 +64,41 @@ Citizen.CreateThread(function()
 end)
 
 
-RegisterNetEvent("SDMD:Client:BadInv")
-AddEventHandler("SDMD:Client:BadInv", function()
-	TriggerServerEvent("InteractSound_SV:PlayWithinDistance", SDC.MaxSoundDistance, SDC.DetectorSoundFile, SDC.DetectorVolume)
+RegisterNetEvent("SDMD:Client:DetectorBeep")
+AddEventHandler("SDMD:Client:DetectorBeep", function(dacoords, id)
+	local ped = PlayerPedId()
+	local coords = GetEntityCoords(ped)
+	local dist = Vdist(coords, dacoords.x, dacoords.y, dacoords.z)
+
+	if dist <= SDC.MaxSoundDistance then
+		local int = math.ceil(SDC.MaxSoundDistance/10)
+		local sec = math.ceil(dist/int)
+		local tab = {
+			[1] = 1.0,
+			[2] = 0.9,
+			[3] = 0.8,
+			[4] = 0.7,
+			[5] = 0.6,
+			[6] = 0.5,
+			[7] = 0.4,
+			[8] = 0.3,
+			[9] = 0.2,
+			[10] = 0.1
+		}
+		local finalVolume = 0.0
+
+		if sec <= 1 then
+			finalVolume = tab[1]
+		elseif sec >= 10 then
+			finalVolume = tab[10]
+		else
+			finalVolume = tab[sec]
+		end
+		SendNUIMessage({
+			SoundType = {"Started", "./sound/"..SDC.DetectorSoundFile..".ogg", finalVolume},
+			SoundPerson	= id
+		})
+	end
 end)
 
 

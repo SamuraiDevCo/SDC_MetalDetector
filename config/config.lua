@@ -8,7 +8,6 @@ SDC.Framework = "qb-core" --Either "qb-core" or "esx"
 SDC.DetectorCooldown = 2 --In Seconds (Wouldn't Touch This)
 SDC.MaxSoundDistance = 20 --How close you have to be hear the sound
 SDC.DetectorSoundFile = "detectorbeep" --Soundfile name
-SDC.DetectorVolume = 1.0 --Volume of the sound
 ---------------------------------------------------------------------------------
 -------------------------------Prop Configs--------------------------------------
 ---------------------------------------------------------------------------------

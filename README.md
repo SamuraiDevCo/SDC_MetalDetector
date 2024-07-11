@@ -6,7 +6,6 @@ This script allows a you to place down or use existing native metal detectors li
 
 # Requirements
 - ESX LEGACY OR QBCORE
-- InteractSound
 
 # Webstore: https://samurai-dev-co.tebex.io
 # Discord: https://discord.gg/2r9zEKYPH4
@@ -20,8 +19,7 @@ You can add detector locations or use native locations in config! Just set your 
 # Installation:
 1. Download the lastest Release under the releases tab
 2. Un-zip the folder and place into your server resources folder
-3. Configure the config to your needs and **make sure to set your framework and blacklisted items**!
-4. Drop the sound file into interactsound!
+3. Configure the config to your needs and make sure to set your framework and blacklisted items!
 
 # Credits
 This resource was made from scratch by Samurai Development! The owner of Samurai Development is Hobo(discord: hobodevco). Please do not steal/rip my work and sell/release for yourself. Any further questions or concerns may be disclosed with Hobo!

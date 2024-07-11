@@ -3,7 +3,13 @@ games { 'gta5' }
 
 author 'HoboDevCo#3011'
 description 'SDC | Metal Detector Script'
-version '1.0.2'
+version '1.0.3'
+
+ui_page "src/html/index.html"
+files {
+	"src/html/index.html",
+	"src/html/sound/*.ogg"
+}
 
 shared_script {
     "config/config.lua"
