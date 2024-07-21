@@ -19,12 +19,21 @@ function hasItem(src, item)
         end
     elseif SDC.Framework == "esx" then
         local xPlayer = ESX.GetPlayerFromId(src)
-        local inventoryItem = xPlayer.getInventoryItem(item)
-        if inventoryItem and inventoryItem.count > 0 then
-            return true
-        else
-            return false
+        local hasItem = xPlayer.hasItem(item)
+        local foundItem = false
+
+        foundItem = hasItem and hasItem.count > 0
+
+        if not foundItem then
+            for k, v in ipairs(xPlayer.loadout) do
+                if item:upper() == v.name:upper() then
+                    foundItem = true
+                    break
+                end
+            end
         end
+
+        return foundItem
     end
 end
 
@@ -37,9 +46,21 @@ function removeAllOfItem(src, item)
         end
     elseif SDC.Framework == "esx" then
         local xPlayer = ESX.GetPlayerFromId(src)
-        local inventoryItem = xPlayer.getInventoryItem(item)
-        if inventoryItem then
-            xPlayer.removeInventoryItem(item, inventoryItem.count)
+        local hasItem = xPlayer.hasItem(item)
+        local foundItem = false
+
+        if hasItem then
+            foundItem = true
+            xPlayer.removeInventoryItem(item, hasItem.count)
+        end
+
+        if not foundItem then
+            for k, v in ipairs(xPlayer.loadout) do
+                if item:upper() == v.name:upper() then
+                    xPlayer.removeWeapon(item)
+                    break
+                end
+            end
         end
     end
 end
