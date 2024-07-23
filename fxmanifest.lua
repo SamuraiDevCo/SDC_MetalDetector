@@ -3,7 +3,7 @@ games { 'gta5' }
 
 author 'HoboDevCo#3011'
 description 'SDC | Metal Detector Script'
-version '1.0.3'
+version '1.0.4'
 
 ui_page "src/html/index.html"
 files {
