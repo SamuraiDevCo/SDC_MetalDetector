@@ -1,8 +1,11 @@
 local detectorsNear = {}
 local closestDet = 1
+local closestCoord = 1
 
 local inDet = false
 local cooldown = false
+
+local isWhitelistedJob = false
 
 local modelCheat = {}
 
@@ -19,6 +22,7 @@ Citizen.CreateThread(function()
 			if modelCheat[tostring(GetEntityModel(ent))] and Vdist(entC.x, entC.y, entC.z, GetEntityCoords(ped)) <= 50 then
 				table.insert(detectorsNear2, ent)
 			end
+			Wait(10)
 		end
 		detectorsNear = detectorsNear2
 
@@ -36,8 +40,26 @@ Citizen.CreateThread(function()
 			closestDet = 1
 		end
 
+		if SDC.CheckCoords[1] then
+			local coords = GetEntityCoords(ped)
+			local minDistance = 15
+			for i=1, #SDC.CheckCoords do
+				dist = Vdist(coords.x, coords.y, coords.z, SDC.CheckCoords[i])
+				if dist < minDistance then
+					minDistance = dist
+					closestCoord = i
+				end
+			end
+		end
 
-		Citizen.Wait(500)
+		job = GetCurrentJob()
+		if job and SDC.JobWhitelist[job] then
+			isWhitelistedJob = true
+		else
+			isWhitelistedJob = false
+		end
+
+		Citizen.Wait(1000)
 	end
 end)
 
@@ -46,17 +68,32 @@ Citizen.CreateThread(function()
 		local ped = PlayerPedId()
 		local coords = GetEntityCoords(ped)
 		
-		if detectorsNear[1] and Vdist(coords.x, coords.y, coords.z, GetOffsetFromEntityInWorldCoords(detectorsNear[closestDet], 0.0, 0.0, 1.0)) <= 5 and not cooldown then
-			if Vdist(coords.x, coords.y, coords.z, GetOffsetFromEntityInWorldCoords(detectorsNear[closestDet], 0.0, 0.0, 1.0)) <= 0.5 and not inDet then
-				inDet = true
-				TriggerServerEvent("SDMD:Server:CheckInv", GetEntityCoords(detectorsNear[closestDet]))
-			elseif Vdist(coords.x, coords.y, coords.z, GetOffsetFromEntityInWorldCoords(detectorsNear[closestDet], 0.0, 0.0, 1.0)) > 0.8 and inDet then
-				inDet = false
-				cooldown = true
-				Citizen.Wait(1000 * SDC.DetectorCooldown)
-				cooldown = false
+		if not isWhitelistedJob then
+			if detectorsNear[1] and closestDet and Vdist(coords.x, coords.y, coords.z, GetOffsetFromEntityInWorldCoords(detectorsNear[closestDet], 0.0, 0.0, 1.0)) <= 5 and not cooldown then
+				if Vdist(coords.x, coords.y, coords.z, GetOffsetFromEntityInWorldCoords(detectorsNear[closestDet], 0.0, 0.0, 1.0)) <= 0.5 and not inDet then
+					inDet = true
+					TriggerServerEvent("SDMD:Server:CheckInv", GetEntityCoords(detectorsNear[closestDet]))
+				elseif Vdist(coords.x, coords.y, coords.z, GetOffsetFromEntityInWorldCoords(detectorsNear[closestDet], 0.0, 0.0, 1.0)) > 0.8 and inDet then
+					inDet = false
+					cooldown = true
+					Citizen.Wait(1000 * SDC.DetectorCooldown)
+					cooldown = false
+				end
+				Citizen.Wait(100)
+			elseif closestCoord and Vdist(coords.x, coords.y, coords.z, SDC.CheckCoords[closestCoord]) <= 5 and not cooldown then
+				if Vdist(coords.x, coords.y, coords.z, SDC.CheckCoords[closestCoord]) <= 0.5 and not inDet then
+					inDet = true
+					TriggerServerEvent("SDMD:Server:CheckInv", SDC.CheckCoords[closestCoord])
+				elseif Vdist(coords.x, coords.y, coords.z, SDC.CheckCoords[closestCoord]) > 0.8 and inDet then
+					inDet = false
+					cooldown = true
+					Citizen.Wait(1000 * SDC.DetectorCooldown)
+					cooldown = false
+				end
+				Citizen.Wait(100)
+			else
+				Citizen.Wait(500)
 			end
-			Citizen.Wait(100)
 		else
 			Citizen.Wait(500)
 		end

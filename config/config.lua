@@ -8,6 +8,11 @@ SDC.Framework = "qb-core" --Either "qb-core" or "esx"
 SDC.DetectorCooldown = 2 --In Seconds (Wouldn't Touch This)
 SDC.MaxSoundDistance = 20 --How close you have to be hear the sound
 SDC.DetectorSoundFile = "detectorbeep" --Soundfile name
+
+SDC.JobWhitelist = { --All jobs you want whitelisted from being checked
+    --EX: ["job_name"] = "Job_Label",
+    ["police"] = "Police",
+}
 ---------------------------------------------------------------------------------
 -------------------------------Prop Configs--------------------------------------
 ---------------------------------------------------------------------------------
@@ -20,6 +25,13 @@ SDC.SpawnDetectors = { --A Model Spawner to place down detectors that arn't nati
     {Coords = vec4(-365.7537, -244.4017, 36.0664, 235.3069), Model = "ch_prop_ch_metal_detector_01a"},
 }
 SDC.SpawnDetectorDist = 50 --How close/far you need to be for the prop to spawn/delete
+
+---------------------------------------------------------------------------------
+-------------------------------Coord Configs--------------------------------------
+---------------------------------------------------------------------------------
+SDC.CheckCoords = { --All coords that act like a detector (This is for maps with pre-placed detectors)
+    --EX: vec4(0.0, 0.0, 0.0, 0.0)
+}
 
 ---------------------------------------------------------------------------------
 -------------------------------Item Configs--------------------------------------

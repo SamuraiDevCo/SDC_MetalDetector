@@ -3,7 +3,7 @@ games { 'gta5' }
 
 author 'HoboDevCo#3011'
 description 'SDC | Metal Detector Script'
-version '1.0.4'
+version '1.0.5'
 
 ui_page "src/html/index.html"
 files {
@@ -16,6 +16,7 @@ shared_script {
 }
 
 client_scripts {
+    "src/client/client_customize_me.lua",
     "src/client/client.lua"
 }
 
@@ -27,6 +28,7 @@ server_scripts {
 escrow_ignore {
     "config/config.lua",
     "src/client/client.lua",
+    "src/client/client_customize_me.lua",
     "src/server/server.lua",
     "src/server/server_customize_me.lua",
 }
